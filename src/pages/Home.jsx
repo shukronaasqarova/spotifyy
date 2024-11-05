@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom'; // Routerdan Link ni import qilish
+import { Link } from 'react-router-dom';
 import http from '../axios';
 
 function Home() {

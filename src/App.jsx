@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Details from './pages/Details';
 import Likes from './pages/Likes';
-import http from './axios';
+// import http from './axios';
 import MainLayout from './layout/MainLayout';
 
 function App() {
@@ -23,7 +23,7 @@ function App() {
       <Routes>
         <Route path='/' element={<MainLayout><Home /></MainLayout>}></Route>
         <Route path='/likes' element={<MainLayout><Likes /></MainLayout>}></Route>
-        <Route path='/playlist/:id' element={<MainLayout><Details /></MainLayout>}></Route> {/* marshrutni o'zgartirdik */}
+        <Route path='/playlist/:id' element={<MainLayout><Details></Details></MainLayout>}></Route>
       </Routes>
     </div>
   );
