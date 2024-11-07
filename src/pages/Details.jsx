@@ -3,14 +3,14 @@ import { useParams } from 'react-router-dom';
 import { FaPlay, FaHeart, FaEllipsisH } from 'react-icons/fa';
 import http from '../axios';
 import { getToken } from '../utils/utils';
-import '../App.css'
+import '../App.css';
 
 function Details() {
     const { id } = useParams();
     const [playlist, setPlaylist] = useState(null);
     const [playingTrackId, setPlayingTrackId] = useState(null);
     const [audio, setAudio] = useState(null);
-    const [likedTracks, setLikedTracks] = useState(new Set());
+    const [likedTracks, setLikedTracks] = useState(new Set(JSON.parse(localStorage.getItem('likedTracks')) || []));
 
     useEffect(() => {
         getToken().then(() => {
@@ -57,6 +57,7 @@ function Details() {
             } else {
                 updatedLikes.add(trackId);
             }
+            localStorage.setItem('likedTracks', JSON.stringify(Array.from(updatedLikes)));
             return updatedLikes;
         });
     };
@@ -70,7 +71,7 @@ function Details() {
                         <p className="text-xs font-semibold uppercase tracking-widest">Public Playlist</p>
                         <h1 className="text-6xl font-bold leading-tight">{playlist?.name}</h1>
                         <p className="text-sm mt-2 text-gray-300">{playlist?.description}</p>
-                        <p className="text-xs text-gray-400 mt-2">Made for {playlist?.owner?.display_name} • {playlist?.tracks?.total} songs, 2hr 01 min</p>
+                        <p className="text-xs text-gray-400 mt-2">Made for {playlist?.owner?.display_name} • {playlist?.tracks?.total} songs</p>
                     </div>
                 </div>
                 <div className="flex gap-5 mt-6 items-center">
@@ -104,17 +105,7 @@ function Details() {
                                     className="border-b border-gray-800 hover:bg-gray-800 transition-colors duration-150"
                                     onClick={() => handlePlayPause(trackItem.track.preview_url, trackItem.track.id)}
                                 >
-                                    <td className="py-2">
-                                        {isPlaying ? (
-                                            <div className="flex items-center gap-1 animate-pulse text-green-500">
-                                                <span className="bar bar1">|</span>
-                                                <span className="bar bar2">||</span>
-                                                <span className="bar bar3">|</span>
-                                            </div>
-                                        ) : (
-                                            index + 1
-                                        )}
-                                    </td>
+                                    <td className="py-2">{isPlaying ? <div className="flex items-center gap-1 animate-pulse text-green-500"><span className="bar bar1">|</span><span className="bar bar2">||</span><span className="bar bar3">|</span></div> : index + 1}</td>
                                     <td className="py-2 flex items-center gap-3">
                                         <img className="w-10 h-10 rounded" src={trackItem.track.album.images[0]?.url || 'fallback-image-url'} alt={trackItem.track.name} />
                                         <div>
